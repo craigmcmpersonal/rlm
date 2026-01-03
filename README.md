@@ -1,15 +1,20 @@
 
 ---
 
-<h1 align="center">
-Recursive Language Models
+<h1 align="center" style="font-size:2.8em">
+<span>Recursive Language Models (<span style="color:orange">RLM</span>s)</span>
 </h1>
 
-<p align="center">
+<p align="center" style="font-size:1.3em">
   <a href="https://arxiv.org/abs/2512.24601">Full Paper</a> •
   <a href="https://alexzhang13.github.io/blog/2025/rlm/">Blogpost</a>
 </p>
 
+<p align="center">
+  <a href="https://arxiv.org/abs/2512.24601">
+    <img src="media/paper_preview.png" alt="Paper Preview" width="300"/>
+  </a>
+</p>
 
 ## Overview
 Recursive Language Models (RLMs) are a task-agnostic inference paradigm for language models (LMs) to handle near-infinite length contexts by enabling the LM to *programmatically* examine, decompose, and recursively call itself over its input. RLMs replace the canonical `llm.completion(prompt, model)` call with a `rlm.completion(prompt, model)` call. RLMs offload the context as a variable in a REPL environment that the LM can interact with and launch sub-LM calls inside of.
@@ -52,13 +57,15 @@ We support two types of REPL environments -- isolated, and non-isolated. Non-iso
 
 ```python
 rlm = RLM(
-    environment="...", # "local", "modal", "prime"
+    environment="...", # "local", "docker", "modal", "prime"
     environment_kwargs={...},
 )
 ```
 
 ### Local Environments
-The default `local` environment runs in the same process as the RLM itself, with specified global and local namespaces for minimal security. Using this REPL is generally safe, but should not be used for production settings. It also shares the same virtual environment (e.g. Conda or uv) as the host process.
+The default `local` environment `LocalREPL` runs in the same process as the RLM itself, with specified global and local namespaces for minimal security. Using this REPL is generally safe, but should not be used for production settings. It also shares the same virtual environment (e.g. Conda or uv) as the host process.
+
+**Docker** <img src="https://github.com/docker.png" alt="Docker" height="20" style="vertical-align: middle;"/> (*requires [Docker installed](https://docs.docker.com/desktop/setup/install/)*). We also support a Docker-based environment called `DockerREPL` that launches the REPL environment as a Docker image. By default, we use the `python:3.11-slim` image, but the user can specify custom images as well.
 
 ### Isolated Environments
 We support several different REPL environments that run on separate, cloud-based machines. Whenever a recursive sub-call is made in these instances, it is requested from the host process.
@@ -113,5 +120,5 @@ npm run dev        # default localhost:3001
 
 You'll have the option to select saved `.jsonl` files 
 <p align="center">
-  <img src="media/visualizer.png" alt="RLM Visualizer Example" width="600"/>
+  <img src="media/visualizer.png" alt="RLM Visualizer Example" width="800"/>
 </p>
